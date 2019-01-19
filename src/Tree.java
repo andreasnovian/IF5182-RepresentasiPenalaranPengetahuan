@@ -54,7 +54,13 @@ public class Tree {
 
         if (node.data == word.charAt(0)) {
             if (node.leftChild != null) {
-                nextChild = node.leftChild;
+                if (word.charAt(1) == node.leftChild.data) {
+                    nextChild = node.leftChild;
+                } else {
+                    nextChild = new Node(word.charAt(1));
+                    nextChild.parent = node.leftChild;
+                    node.leftChild.rightChild = nextChild;
+                }
             } else {
                 nextChild = new Node(word.charAt(1));
                 nextChild.parent = node;
@@ -65,11 +71,21 @@ public class Tree {
             } else {
                 insertRec(word.substring(1), nextChild);
             }
-        } else {
+        } else if (node.rightChild == null) {
             nextChild = new Node(word.charAt(0));
             nextChild.parent = node;
             node.rightChild = nextChild;
             insertRec(word, nextChild);
+        } else {
+            if (node.rightChild.data == word.charAt(0)) {
+                nextChild = node.rightChild;
+                insertRec(word, nextChild);
+            } else {
+                nextChild = new Node(word.charAt(0));
+                nextChild.parent = node.rightChild;
+                node.rightChild.rightChild = nextChild;
+                insertRec(word, nextChild);
+            }
         }
     }
 
