@@ -7,9 +7,12 @@ public class Tester {
         Tree t = new Tree();
         t.insertToTree("dayat");
         t.insertToTree("sil");
-        t.insertToTree("step");
-        System.out.println("");
-        System.out.println(t.searchInTree("andre"));
-        System.out.println(t.searchInTree("wisnu"));
+        t.insertToTree("step"); //bug
+        //t.insertToTree("stef"); //bug
+        t.insertToTree("menori");
+        System.out.println(t.printAllWordInTree());
+        System.out.println("dayat : "+t.search("dayat"));
+        System.out.println("menori : "+t.search("menori"));
+        System.out.println("andre : "+t.search("andre"));
     }
 }

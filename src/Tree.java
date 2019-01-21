@@ -9,8 +9,15 @@ import java.util.ArrayList;
 public class Tree {
 
     private Node root;
+    private ArrayList<String> words;
 
-    public boolean searchInTree(String key) {
+    //Cara barbar buat search
+    public boolean search(String key) {
+        this.printAllWordInTree();
+        return this.words.contains(key);
+    }
+
+    private boolean searchInTree(String key) {
         if (key.charAt(0) == root.data) {
             if (key.length() == 1 && root.endOfWord) {
                 return true;
@@ -90,54 +97,16 @@ public class Tree {
     }
 
     public String printAllWordInTree() {
-        ArrayList<String> words = new ArrayList<>();
+        this.words = new ArrayList<>();
         String result = "";
-        Node node, prev;
-        String word = "";
-        int letterInt;
-        char letterChar;
+        Node node;
 
-//        for (int ascii = 97; ascii < 123; ascii++) {
-//            if (roots.containsKey((char) ascii)) {
-//                node = roots.get((char) ascii);
-//                word = "" + (char) ascii;
-//                letterInt = 97;
-//                do {
-//                    letterChar = (char) letterInt;
-//                    if (node.children.containsKey(letterChar)) {
-//                        word += letterChar;
-//                        node = node.children.get(letterChar);
-//                        letterInt = 97;
-//                        if (node.endOfWord) {
-//                            words.add(word);
-//                        }
-//                    } else {
-//                        if (letterInt < 122) {
-//                            letterInt++;
-//                        } else {
-//                            char prevLetter = word.charAt(word.length() - 1);
-//                            letterInt = (int) prevLetter;
-//                            letterInt++;
-//                            word = word.substring(0, word.length() - 1);
-//                            node = node.parent;
-//                        }
-//                    }
-//                } while (node != null);
-//            }
-//        }
         if (root != null) {
             node = root;
-            do { //Telusuri ke anak kiri terus sampai habis
-                word += node.data;
-                if (node.endOfWord) {
-                    words.add(word);
-                }
-                prev = node;
-                node = node.leftChild;
-            } while (node != null);
-
-            node = prev.parent;
-
+            while (node != null) {
+                words.add(printRec(node.leftChild, ""+node.data));
+                node = node.rightChild;
+            }
         } else {
             return "";
         }
@@ -149,12 +118,13 @@ public class Tree {
         return result;
     }
 
-    private char printRec(Node node) {
-        if (node.endOfWord) {
-            return node.data;
+    private String printRec(Node node, String word) {
+        if (node.leftChild == null && node.endOfWord) {
+            return word + node.data;
+        } else if (node.leftChild != null) {
+            return printRec(node.leftChild, word + node.data);
         } else {
-            return printRec(node.leftChild);
+            return printRec(node.rightChild, word);
         }
     }
-
 }
